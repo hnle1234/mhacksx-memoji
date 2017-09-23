@@ -13,10 +13,14 @@ import {
 
 export default class App extends React.Component {
   state = {
+    oldUri: require('./Emoji/default_emoji.jpg'),
     imgUri: require('./Emoji/default_emoji.jpg'),
+    emoji: false,
+    res: ''
   }
 
   render() {
+    console.log(this.state.res);
     return (
       <View style={styles.container}>
         <View ref={(ref) => this.memeView = ref}>
@@ -37,8 +41,31 @@ export default class App extends React.Component {
             <Text style={styles.buttonText}>save!</Text>
           </TouchableOpacity>
         </View>
+        <View style={{ flexDirection: 'row' }}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={this._memePic(this.state.imgUri)}>
+            <Text style={styles.buttonText}>emoji!</Text>
+          </TouchableOpacity>
+        </View>
+        {this.state.res[0] != undefined ? <Text>{this.state.res[0].scores.anger}</Text> : null}
       </View>
     );
+  }
+
+  _memePic(imgUri) {
+    this.setState({emoji: true});
+    // fetch('https://westus.api.cognitive.microsoft.com/emotion/v1.0/', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Ocp-Apim-Subscription-Key': {key},
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     url: {imgUri}
+    //   })
+    // }).then((response) => response.json())
+    //  .then((responseJson) => { this.setState({ res: responseJson}); });
   }
 
   _onTakePic = async () => {
@@ -47,7 +74,7 @@ export default class App extends React.Component {
       uri,
     } = await Expo.ImagePicker.launchCameraAsync({});
     if (!cancelled) {
-      this.setState({ imgUri: uri });
+      this.setState({ imgUri: {uri:uri} });
     }
   }
 
