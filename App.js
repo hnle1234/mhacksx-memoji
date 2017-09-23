@@ -1,3 +1,4 @@
+import {key} from './lock'
 import Expo from 'expo';
 import React from 'react';
 import {
@@ -12,33 +13,17 @@ import {
 
 export default class App extends React.Component {
   state = {
-    imgUri: 'https://imgflip.com/s/meme/Philosoraptor.jpg',
-    topText: '',
-    bottomText: '',
+    imgUri: require('./Emoji/default_emoji.jpg'),
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <TextInput
-          style={styles.input}
-          onChangeText={(text) => this.setState({ topText: text })}
-        />
-        <TextInput
-          style={styles.input}
-          onChangeText={(text) => this.setState({ bottomText: text })}
-        />
         <View ref={(ref) => this.memeView = ref}>
           <Image
             style={{ width: 300, height: 300 }}
-            source={{ uri: this.state.imgUri }}
+            source={this.state.imgUri}
           />
-          <Text style={[styles.text, { top: 5 }]}>
-            {this.state.topText}
-          </Text>
-          <Text style={[styles.text, { bottom: 5 }]}>
-            {this.state.bottomText}
-          </Text>
         </View>
         <View style={{ flexDirection: 'row' }}>
           <TouchableOpacity
